@@ -33,3 +33,7 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+springBoot {
+	mainClass.set("com.jakimenko.rainforecastbot.RainforecastbotApplication")
+}
