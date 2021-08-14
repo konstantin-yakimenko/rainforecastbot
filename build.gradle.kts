@@ -37,3 +37,10 @@ tasks.withType<Test> {
 springBoot {
 	mainClass.set("com.jakimenko.rainforecastbot.RainforecastbotApplication")
 }
+
+tasks.jar {
+	manifest {
+		attributes(mapOf("Implementation-Title" to project.name,
+			"Implementation-Version" to project.version))
+	}
+}
