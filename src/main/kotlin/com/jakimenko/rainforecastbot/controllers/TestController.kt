@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.*
 class TestController {
 
     @GetMapping("test")
-    fun testMethod() = System.getenv("TGTOKEN")
+    fun testMethod() = "test method"
+        // System.getenv("TGTOKEN")
 
     @GetMapping
     fun rootTestMethod() = "Root test method"
