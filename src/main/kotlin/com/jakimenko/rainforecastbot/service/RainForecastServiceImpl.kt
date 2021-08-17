@@ -13,8 +13,11 @@ class RainForecastServiceImpl(
 ): RainForecastService {
 
     override fun callback(update: Update?) {
-        val chatId = update!!.message().chat().id()
-        val response = bot.execute(SendMessage(chatId, "Hello!"))
+        println("update = ${update}")
+        println("message = ${update!!.message()}")
+        println("chatId = ${update.message().chat().id()}")
+//        val chatId = update!!.message().chat().id()
+//        val response = bot.execute(SendMessage(chatId, "Hello!"))
     }
 
     override fun register(): String {
