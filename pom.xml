@@ -34,6 +34,24 @@
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib-jdk8</artifactId>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.telegram</groupId>-->
+<!--			<artifactId>telegrambots</artifactId>-->
+<!--			<version>5.3.0</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>dev.inmo</groupId>-->
+<!--			<artifactId>tgbotapi.core</artifactId>-->
+<!--			<version>0.35.5</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>com.github.pengrad</groupId>
+			<artifactId>java-telegram-bot-api</artifactId>
+			<version>5.2.0</version>
+		</dependency>
+		<!--
+		https://github.com/pengrad/java-telegram-bot-api
+		-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
