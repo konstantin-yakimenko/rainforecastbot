@@ -1,5 +1,6 @@
 package com.jakimenko.rainforecastbot.controllers
 
+import com.jakimenko.rainforecastbot.dto.Update
 import com.jakimenko.rainforecastbot.service.RainForecastService
 import com.pengrad.telegrambot.model.Message
 import org.springframework.http.ResponseEntity
@@ -21,7 +22,7 @@ class ApiControllers(
 //    fun postCallback(@RequestBody message: Message) = ResponseEntity.ok(rainForecastService.callback(message))
 
     @PostMapping("callback")
-    fun postCallback(@RequestBody message: String): ResponseEntity<String> {
+    fun postCallback(@RequestBody message: Update): ResponseEntity<String> {
         println("message = ${message}")
         return ResponseEntity.ok("Ok");
     }
