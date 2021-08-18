@@ -12,11 +12,9 @@ class RainForecastServiceImpl(
     val bot: TelegramBot = TelegramBot(System.getenv("TGTOKEN"))
 ): RainForecastService {
 
-    override fun callback(updatelist: List<Update?>?) {
-        println("updatelist = ${updatelist}")
-        val update = updatelist!!.first()
+    override fun callback(update: Update) {
         println("update = ${update}")
-        println("message = ${update!!.message()}")
+        println("message = ${update.message()}")
         println("chatId = ${update.message().chat().id()}")
 //        val chatId = update!!.message().chat().id()
 //        val response = bot.execute(SendMessage(chatId, "Hello!"))
