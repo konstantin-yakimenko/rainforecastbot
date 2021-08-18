@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest
 //@SpringBootTest
 class RainforecastbotApplicationTests {
 
-	@Test
+//	@Test
 	fun contextLoads() {
 		println("start")
 		val arr = IntArray(5)
