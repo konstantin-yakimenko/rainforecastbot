@@ -1,7 +1,7 @@
 package com.jakimenko.rainforecastbot.controllers
 
 import com.jakimenko.rainforecastbot.service.RainForecastService
-import com.pengrad.telegrambot.model.Update
+import com.pengrad.telegrambot.model.Message
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -18,7 +18,7 @@ class ApiControllers(
     fun rootTestMethod() = "Root test method"
 
     @PostMapping("callback")
-    fun postCallback(@RequestBody update: String) = ResponseEntity.ok(rainForecastService.callback(update))
+    fun postCallback(@RequestBody message: Message) = ResponseEntity.ok(rainForecastService.callback(message))
 
     @GetMapping("register")
     fun register() = ResponseEntity.ok(rainForecastService.register())
