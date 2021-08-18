@@ -1,8 +1,8 @@
 package com.jakimenko.rainforecastbot.service
 
-import com.pengrad.telegrambot.model.Message
+import com.jakimenko.rainforecastbot.dto.Update
 
 interface RainForecastService {
-    fun callback(message: Message)
+    fun callback(update: Update)
     fun register(): String
 }

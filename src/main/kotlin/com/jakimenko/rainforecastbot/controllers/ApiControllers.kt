@@ -18,14 +18,8 @@ class ApiControllers(
     @GetMapping
     fun rootTestMethod() = "Root test method"
 
-//    @PostMapping("callback")
-//    fun postCallback(@RequestBody message: Message) = ResponseEntity.ok(rainForecastService.callback(message))
-
     @PostMapping("callback")
-    fun postCallback(@RequestBody message: Update): ResponseEntity<String> {
-        println("message = ${message}")
-        return ResponseEntity.ok("Ok");
-    }
+    fun postCallback(@RequestBody update: Update) = ResponseEntity.ok(rainForecastService.callback(update))
 
     @GetMapping("register")
     fun register() = ResponseEntity.ok(rainForecastService.register())

@@ -1,7 +1,7 @@
 package com.jakimenko.rainforecastbot.service
 
+import com.jakimenko.rainforecastbot.dto.Update
 import com.pengrad.telegrambot.TelegramBot
-import com.pengrad.telegrambot.model.Message
 import com.pengrad.telegrambot.request.SendMessage
 import com.pengrad.telegrambot.request.SetWebhook
 import org.springframework.stereotype.Service
@@ -12,12 +12,10 @@ class RainForecastServiceImpl(
     val bot: TelegramBot = TelegramBot(System.getenv("TGTOKEN"))
 ): RainForecastService {
 
-    override fun callback(message: Message) {
-        println("message = ${message}")
-        println("chatId = ${message.chat().id()}")
-        val user = message.from()
-        val chatId = message.chat().id()
-        val response = bot.execute(SendMessage(chatId, "Hello, ${user.firstName()}!"))
+    override fun callback(update: Update) {
+        val user = update.message!!.from
+        val chatId = update.message.chat!!.id
+        val response = bot.execute(SendMessage(chatId, "Hello, ${user!!.first_name}!"))
         println("response = ${response}")
     }
 
