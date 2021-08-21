@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/")
-class ApiControllers(
+class ApiControllersImpl(
     val rainForecastService: RainForecastService
 ) {
 

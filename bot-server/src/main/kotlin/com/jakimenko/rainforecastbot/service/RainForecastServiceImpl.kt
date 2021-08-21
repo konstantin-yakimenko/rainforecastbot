@@ -15,7 +15,7 @@ class RainForecastServiceImpl(
 
     override fun callback(update: Update) {
         val user = update.message!!.from
-        val chatId = update.message.chat!!.id
+        val chatId = update.message!!.chat!!.id
         val response = bot.execute(SendMessage(chatId, "Hello, ${user!!.first_name}!"))
         println("response = ${response}")
     }
