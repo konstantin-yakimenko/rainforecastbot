@@ -5,4 +5,5 @@ import com.jakimenko.rainforecastbot.dto.Update
 interface RainForecastService {
     fun callback(update: Update)
     fun register(): String
+    fun unsetWebhooks(): String
 }

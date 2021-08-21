@@ -2,7 +2,6 @@ package com.jakimenko.rainforecastbot.controllers
 
 import com.jakimenko.rainforecastbot.dto.Update
 import com.jakimenko.rainforecastbot.service.RainForecastService
-import com.pengrad.telegrambot.model.Message
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -18,10 +17,13 @@ class ApiControllers(
     @GetMapping
     fun rootTestMethod() = "Root test method"
 
-    @PostMapping("callback")
+    @PostMapping("4875293485AAGo77nj9TrqBRH2EZc8BvVitDKAMVZFX32CQ")
     fun postCallback(@RequestBody update: Update) = ResponseEntity.ok(rainForecastService.callback(update))
 
     @GetMapping("register")
     fun register() = ResponseEntity.ok(rainForecastService.register())
+
+    @GetMapping("unregister")
+    fun unregister() = ResponseEntity.ok(rainForecastService.unsetWebhooks())
 
 }

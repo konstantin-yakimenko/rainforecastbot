@@ -2,6 +2,7 @@ package com.jakimenko.rainforecastbot.service
 
 import com.jakimenko.rainforecastbot.dto.Update
 import com.pengrad.telegrambot.TelegramBot
+import com.pengrad.telegrambot.request.DeleteWebhook
 import com.pengrad.telegrambot.request.SendMessage
 import com.pengrad.telegrambot.request.SetWebhook
 import org.springframework.stereotype.Service
@@ -21,7 +22,15 @@ class RainForecastServiceImpl(
 
     override fun register(): String {
         val request: SetWebhook = SetWebhook()
-            .url(System.getenv("WEBHOOK_URL") + "/callback")
+            .url(System.getenv("WEBHOOK_URL") + "4875293485AAGo77nj9TrqBRH2EZc8BvVitDKAMVZFX32CQ")
+
+        val response = bot.execute(request)
+        return if (response.isOk)
+            "Webhook was registered successful" else "Error webhook regitering"
+    }
+
+    override fun unsetWebhooks(): String {
+        val request: DeleteWebhook = DeleteWebhook().dropPendingUpdates(true)
         val response = bot.execute(request)
         return if (response.isOk)
             "Webhook was registered successful" else "Error webhook regitering"
