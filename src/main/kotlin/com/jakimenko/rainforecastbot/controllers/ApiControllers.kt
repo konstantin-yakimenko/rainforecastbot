@@ -20,10 +20,10 @@ class ApiControllers(
     @PostMapping("4875293485AAGo77nj9TrqBRH2EZc8BvVitDKAMVZFX32CQ")
     fun postCallback(@RequestBody update: Update) = ResponseEntity.ok(rainForecastService.callback(update))
 
-    @GetMapping("register")
-    fun register() = ResponseEntity.ok(rainForecastService.register())
+//    @GetMapping("register")
+//    fun register() = ResponseEntity.ok(rainForecastService.register())
 
-    @GetMapping("unregister")
-    fun unregister() = ResponseEntity.ok(rainForecastService.unsetWebhooks())
+//    @GetMapping("unregister")
+//    fun unregister() = ResponseEntity.ok(rainForecastService.unsetWebhooks())
 
 }

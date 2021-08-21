@@ -33,6 +33,6 @@ class RainForecastServiceImpl(
         val request: DeleteWebhook = DeleteWebhook().dropPendingUpdates(true)
         val response = bot.execute(request)
         return if (response.isOk)
-            "Webhook was registered successful" else "Error webhook regitering"
+            "Webhook was unregistered successful" else "Error webhook regitering"
     }
 }
