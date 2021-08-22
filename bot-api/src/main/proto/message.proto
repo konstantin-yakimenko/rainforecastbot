@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package ru.jakimenko.rainforecastbot.proto;
+
+service TelegramMessage {
+  rpc saveUpdate(Update) returns (ResponseId);
+  rpc getUpdate(ResponseId) returns (Update);
+}
+
+message ResponseId {
+  string id = 1;
+}
+
+message Update {
+  int32 update_id = 1;
+  Message message = 2;
+}
+
+message Message {
+  int32 message_id = 1;
+  User from = 2;
+  Chat chat = 3;
+  int32 date = 4;
+  string text = 5;
+  repeated MessageEntity entities = 6;
+  map<string, ServiceType> service_map = 7;
+}
+
+message MessageEntity {
+  int32 offset = 1;
+  int32 length = 2;
+  string type = 3;
+}
+
+message ServiceType {
+  int32 id = 1;
+  string message_service_type = 2;
+}
+
+message User {
+  int32 id = 1;
+  bool is_bot = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string username = 5;
+  Lang language = 6;
+}
+
+message Chat {
+  int32 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string username = 4;
+  string type = 5;
+}
+
+enum Lang {
+  ENG = 0;
+  RUS = 1;
+  GER = 2;
+}
