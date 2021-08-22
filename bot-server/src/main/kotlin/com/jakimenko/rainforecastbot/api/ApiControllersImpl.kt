@@ -1,6 +1,6 @@
 package com.jakimenko.rainforecastbot.api
 
-import com.jakimenko.rainforecastbot.dto.Update
+import com.jakimenko.rainforecastbot.dto.telegram.Update
 import com.jakimenko.rainforecastbot.service.RainForecastService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
