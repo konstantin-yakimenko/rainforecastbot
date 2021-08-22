@@ -40,10 +40,18 @@ class RainForecastServiceImpl(
 
     private fun buildResponseMessage(weather: CurrentWeatherInCity): String {
         var message = "Текущая погода в ${weather.name}:\n"
-        message += weather.weather.first().description
+        message += weather.weather.first().description+"\n"
         message += "температура ${weather.main.temp}\n"
-        message += "ощущается ${weather.main.feels_like}\n"
-        message += "ветер ${weather.wind.speed}"
+        message += "ощущается как ${weather.main.feels_like}\n"
+        if (weather.wind != null) {
+            message += "ветер ${weather.wind.speed} м/с\n"
+        }
+        if (weather.rain != null) {
+            message += "дождь ${weather.rain.hour} мм\n"
+        }
+        if (weather.snow != null) {
+            message += "снег ${weather.snow.hour} мм\n"
+        }
         return message
     }
 
