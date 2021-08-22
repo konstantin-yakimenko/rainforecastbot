@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.jakimenko.rainforecastbot.dto.telegram.Location
 import com.jakimenko.rainforecastbot.dto.telegram.Update
 import com.jakimenko.rainforecastbot.openweathermap.dto.CurrentWeatherInCity
-import com.jakimenko.rainforecastbot.openweathermap.dto.Weather
 import com.pengrad.telegrambot.TelegramBot
 import com.pengrad.telegrambot.request.DeleteWebhook
 import com.pengrad.telegrambot.request.SendMessage
@@ -30,7 +29,7 @@ class RainForecastServiceImpl(
     override fun callback(update: Update) {
         try {
             logger.info("callback update: $update")
-            val weather: CurrentWeatherInCity = getCurrentWeather(update.message!!.location!!)
+            val weather: CurrentWeatherInCity = getCurrentWeather(update.message!!.location, update.message!!.text)
             val responseMessage = buildResponseMessage(weather)
             val response = bot.execute(SendMessage(update.message!!.chat!!.id, responseMessage))
             println("response = ${response}")
@@ -70,15 +69,22 @@ class RainForecastServiceImpl(
             .replace("T", " ")
     }
 
-    private fun getCurrentWeather(location: Location): CurrentWeatherInCity {
+    private fun getCurrentWeather(location: Location?, city: String?): CurrentWeatherInCity {
         return runBlocking {
-            val URL = "https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=metric&lang=ru&appid=${System.getenv("OPENWEATHERMAP_APP_ID")}"
-
             val client = HttpClient(Java)
-            val httpResponse: HttpResponse = client.get(URL)
-            println("httpResponse = ${httpResponse.status}")
+            val httpResponse: HttpResponse = client.get(buildUrl(location, city))
             val currentWeather = Gson().fromJson(httpResponse.receive<String>(), CurrentWeatherInCity::class.java)
             currentWeather
+        }
+    }
+
+    private fun buildUrl(location: Location?, city: String?): String {
+        if (location != null) {
+            return "https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=metric&lang=ru&appid=${System.getenv("OPENWEATHERMAP_APP_ID")}"
+        } else if (city != null) {
+            return "https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ru&appid=${System.getenv("OPENWEATHERMAP_APP_ID")}"
+        } else {
+            throw IllegalArgumentException("Некорректные входные данные")
         }
     }
 
