@@ -13,29 +13,45 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.java.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
+const val API_URL = "https://api.openweathermap.org/data/2.5/weather?"
 
 @Service
 class RainForecastServiceImpl(
-    val bot: TelegramBot = TelegramBot(System.getenv("TGTOKEN"))
+    val bot: TelegramBot = TelegramBot(System.getenv("TGTOKEN")),
+    val openweathermapAppId: String = System.getenv("OPENWEATHERMAP_APP_ID")
 ): RainForecastService {
     companion object {
         val logger = LoggerFactory.getLogger(RainForecastServiceImpl::class.java)
     }
 
+    @DelicateCoroutinesApi
     override fun callback(update: Update) {
-        try {
-            logger.info("callback update: $update")
-            val weather: CurrentWeatherInCity = getCurrentWeather(update.message!!.location, update.message!!.text)
-            val responseMessage = buildResponseMessage(weather)
-            val response = bot.execute(SendMessage(update.message!!.chat!!.id, responseMessage))
-            println("response = ${response}")
-        } catch (e: Exception) {
-            bot.execute(SendMessage(update.message!!.chat!!.id, "Ошибка получения информации о погоде"))
+        GlobalScope.launch {
+            try {
+                executeCallback(
+                    update.message!!.location,
+                    update.message!!.text,
+                    update.message!!.chat!!.id
+                )
+            } catch (e: Exception) {
+                logger.error("Error", e)
+                sendMessageToUser(update.message!!.chat!!.id, "Ошибка получения информации о погоде")
+            }
         }
+    }
+
+    private fun executeCallback(location: Location?, message: String?, chatId: Int) {
+        val weather: CurrentWeatherInCity = getCurrentWeather(location, message)
+        val responseMessage = buildResponseMessage(weather)
+        sendMessageToUser(chatId, responseMessage)
+    }
+
+    private fun sendMessageToUser(chatId: Int, message: String) {
+        bot.execute(SendMessage(chatId, message))
     }
 
     private fun buildResponseMessage(weather: CurrentWeatherInCity): String {
@@ -71,18 +87,27 @@ class RainForecastServiceImpl(
 
     private fun getCurrentWeather(location: Location?, city: String?): CurrentWeatherInCity {
         return runBlocking {
-            val client = HttpClient(Java)
-            val httpResponse: HttpResponse = client.get(buildUrl(location, city))
-            val currentWeather = Gson().fromJson(httpResponse.receive<String>(), CurrentWeatherInCity::class.java)
-            currentWeather
+            HttpClient(Java) {
+                engine {
+                    threadsCount = 1
+                    pipelining = true
+                }
+            }
+                .use {
+                    withTimeout(1000) {
+                        val httpResponse: HttpResponse = it.get(buildUrl(location, city))
+                        val currentWeather = Gson().fromJson(httpResponse.receive<String>(), CurrentWeatherInCity::class.java)
+                        return@withTimeout currentWeather
+                    }
+                }
         }
     }
 
     private fun buildUrl(location: Location?, city: String?): String {
         if (location != null) {
-            return "https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=metric&lang=ru&appid=${System.getenv("OPENWEATHERMAP_APP_ID")}"
+            return API_URL + "lat=${location.latitude}&lon=${location.longitude}&units=metric&lang=ru&appid=$openweathermapAppId"
         } else if (city != null) {
-            return "https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ru&appid=${System.getenv("OPENWEATHERMAP_APP_ID")}"
+            return API_URL + "q=${city}&units=metric&lang=ru&appid=$openweathermapAppId"
         } else {
             throw IllegalArgumentException("Некорректные входные данные")
         }
@@ -91,7 +116,6 @@ class RainForecastServiceImpl(
     override fun register(): String {
         val request: SetWebhook = SetWebhook()
             .url(System.getenv("WEBHOOK_URL") + "4875293485AAGo77nj9TrqBRH2EZc8BvVitDKAMVZFX32CQ")
-
         val response = bot.execute(request)
         return if (response.isOk)
             "Webhook was registered successful" else "Error webhook regitering"
