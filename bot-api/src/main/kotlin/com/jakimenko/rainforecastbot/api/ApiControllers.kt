@@ -7,5 +7,5 @@ interface ApiControllers {
 
     fun rootTestMethod(): String
 
-    fun postCallback(update: String): ResponseEntity<Unit?>
+    fun postCallback(update: Update): ResponseEntity<Unit?>
 }

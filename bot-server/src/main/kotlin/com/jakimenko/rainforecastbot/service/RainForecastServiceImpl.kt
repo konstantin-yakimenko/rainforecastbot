@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 const val API_URL = "https://api.openweathermap.org/data/2.5/weather?"
+const val FORECAST_COMMAND = "/forecast"
 
 @Service
 class RainForecastServiceImpl(
@@ -33,6 +34,11 @@ class RainForecastServiceImpl(
 
     @DelicateCoroutinesApi
     override fun callback(update: Update) {
+        if (update.message!!.text == FORECAST_COMMAND) {
+            requestLocation(update.message!!.chat!!.id)
+            return
+        }
+
         GlobalScope.launch {
             try {
                 withTimeout(5000) {
@@ -68,7 +74,7 @@ class RainForecastServiceImpl(
         bot.execute(SendMessage(chatId, "Для определения погоды")
             .replyMarkup(
                 ReplyKeyboardMarkup(
-                    KeyboardButton("Отправьте логакцию")
+                    KeyboardButton("Отправьте локацию")
                         .requestLocation(true)))
         )
     }
