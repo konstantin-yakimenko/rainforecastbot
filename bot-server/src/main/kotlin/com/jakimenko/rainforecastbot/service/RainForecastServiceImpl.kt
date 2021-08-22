@@ -5,6 +5,8 @@ import com.jakimenko.rainforecastbot.dto.telegram.Location
 import com.jakimenko.rainforecastbot.dto.telegram.Update
 import com.jakimenko.rainforecastbot.openweathermap.dto.CurrentWeatherInCity
 import com.pengrad.telegrambot.TelegramBot
+import com.pengrad.telegrambot.model.request.KeyboardButton
+import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup
 import com.pengrad.telegrambot.request.DeleteWebhook
 import com.pengrad.telegrambot.request.SendMessage
 import com.pengrad.telegrambot.request.SetWebhook
@@ -22,7 +24,8 @@ const val API_URL = "https://api.openweathermap.org/data/2.5/weather?"
 @Service
 class RainForecastServiceImpl(
     val bot: TelegramBot = TelegramBot(System.getenv("TGTOKEN")),
-    val openweathermapAppId: String = System.getenv("OPENWEATHERMAP_APP_ID")
+    val openweathermapAppId: String = System.getenv("OPENWEATHERMAP_APP_ID"),
+    val gson: Gson = Gson()
 ): RainForecastService {
     companion object {
         val logger = LoggerFactory.getLogger(RainForecastServiceImpl::class.java)
@@ -32,11 +35,13 @@ class RainForecastServiceImpl(
     override fun callback(update: Update) {
         GlobalScope.launch {
             try {
-                executeCallback(
-                    update.message!!.location,
-                    update.message!!.text,
-                    update.message!!.chat!!.id
-                )
+                withTimeout(5000) {
+                    executeCallback(
+                        update.message!!.location,
+                        update.message!!.text,
+                        update.message!!.chat!!.id
+                    )
+                }
             } catch (e: Exception) {
                 logger.error("Error", e)
                 sendMessageToUser(update.message!!.chat!!.id, "Ошибка получения информации о погоде")
@@ -51,7 +56,21 @@ class RainForecastServiceImpl(
     }
 
     private fun sendMessageToUser(chatId: Int, message: String) {
-        bot.execute(SendMessage(chatId, message))
+        bot.execute(SendMessage(chatId, message)
+            .replyMarkup(
+                ReplyKeyboardMarkup(
+                    KeyboardButton("")
+                        .requestLocation(true)))
+        )
+    }
+
+    private fun requestLocation(chatId: Int) {
+        bot.execute(SendMessage(chatId, "Для определения погоды")
+            .replyMarkup(
+                ReplyKeyboardMarkup(
+                    KeyboardButton("Отправьте логакцию")
+                        .requestLocation(true)))
+        )
     }
 
     private fun buildResponseMessage(weather: CurrentWeatherInCity): String {
@@ -96,7 +115,7 @@ class RainForecastServiceImpl(
                 .use {
                     withTimeout(1000) {
                         val httpResponse: HttpResponse = it.get(buildUrl(location, city))
-                        val currentWeather = Gson().fromJson(httpResponse.receive<String>(), CurrentWeatherInCity::class.java)
+                        val currentWeather = gson.fromJson(httpResponse.receive<String>(), CurrentWeatherInCity::class.java)
                         return@withTimeout currentWeather
                     }
                 }

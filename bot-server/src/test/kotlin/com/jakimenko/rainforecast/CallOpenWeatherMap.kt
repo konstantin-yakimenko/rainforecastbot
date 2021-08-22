@@ -25,5 +25,17 @@ import org.junit.jupiter.api.Test
 
 class CallOpenWeatherMap {
 
+    @Test
+    fun test() {
+        val lazySeq = sequence {
+            print("START ")
+            for (i in 1..5) {
+                yield(i)
+                print("STEP ")
+            }
+            print("END")
+        }
+        lazySeq.take(8).forEach { print("$it ") }
+    }
 
 }
