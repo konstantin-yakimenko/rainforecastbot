@@ -15,9 +15,15 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <kotlin.version>1.5.21</kotlin.version>
+        <grpc-client.version>2.12.0.RELEASE</grpc-client.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>net.devh</groupId>
+            <artifactId>grpc-client-spring-boot-starter</artifactId>
+            <version>${grpc-client.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
