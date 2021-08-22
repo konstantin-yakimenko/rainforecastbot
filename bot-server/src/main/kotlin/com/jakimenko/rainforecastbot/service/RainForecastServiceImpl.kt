@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.jakimenko.rainforecastbot.dto.telegram.Location
 import com.jakimenko.rainforecastbot.dto.telegram.Update
 import com.jakimenko.rainforecastbot.openweathermap.dto.CurrentWeatherInCity
+import com.jakimenko.rainforecastbot.openweathermap.dto.Weather
 import com.pengrad.telegrambot.TelegramBot
 import com.pengrad.telegrambot.request.DeleteWebhook
 import com.pengrad.telegrambot.request.SendMessage
@@ -43,6 +44,9 @@ class RainForecastServiceImpl(
         message += weather.weather.first().description+"\n"
         message += "температура ${weather.main.temp}\n"
         message += "ощущается как ${weather.main.feels_like}\n"
+        if (weather.clouds != null) {
+            message += "облачность ${weather.clouds.all} %\n"
+        }
         if (weather.wind != null) {
             message += "ветер ${weather.wind.speed} м/с\n"
         }
@@ -52,7 +56,18 @@ class RainForecastServiceImpl(
         if (weather.snow != null) {
             message += "снег ${weather.snow.hour} мм\n"
         }
+        message += "восход ${calcDate(weather.sys.sunrise, weather.timezone)}\n"
+        message += "закат  ${calcDate(weather.sys.sunset, weather.timezone)}"
         return message
+    }
+
+    private fun calcDate(time: Int, timezone: Int): String {
+        val timeWithZone = (time + timezone).toLong()
+        return java.time.format.DateTimeFormatter.ISO_INSTANT
+            .format(java.time.Instant.ofEpochSecond(timeWithZone))
+            .toString()
+            .replace("Z", "")
+            .replace("T", " ")
     }
 
     private fun getCurrentWeather(location: Location): CurrentWeatherInCity {
