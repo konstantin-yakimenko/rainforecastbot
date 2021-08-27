@@ -15,16 +15,6 @@ class ApiControllersImpl(
     override fun rootTestMethod() = "Root test method"
 
     @PostMapping("4875293485AAGo77nj9TrqBRH2EZc8BvVitDKAMVZFX32CQ")
-    override fun postCallback(@RequestBody update: Update) = ResponseEntity.ok(rainForecastService.callback(update))
-//    override fun postCallback(@RequestBody update: Update): ResponseEntity<Unit?> {
-//        println("update = ${update}")
-//        return ResponseEntity.ok(Unit)
-//    }
-
-//    @GetMapping("register")
-//    fun register() = ResponseEntity.ok(rainForecastService.register())
-
-//    @GetMapping("unregister")
-//    fun unregister() = ResponseEntity.ok(rainForecastService.unsetWebhooks())
+    override fun callback(@RequestBody update: Update) = ResponseEntity.ok(rainForecastService.callback(update))
 
 }

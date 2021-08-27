@@ -1,6 +1,6 @@
-package com.jakimenko.rainforecastbot.openweathermap.dto
+package com.jakimenko.rainforecastbot.dto.openweathermap
 
-data class CurrentWeatherInCity (
+data class CurrentWeatherInCity(
     val coord: Coord,
     val weather: Array<Weather>,
     val base: String,
@@ -16,4 +16,4 @@ data class CurrentWeatherInCity (
     val id: Int,
     val name: String,
     val cod: Int
-)
+): WeatherInfo

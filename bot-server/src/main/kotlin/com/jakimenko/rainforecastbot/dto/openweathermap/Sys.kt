@@ -1,4 +1,4 @@
-package com.jakimenko.rainforecastbot.openweathermap.dto
+package com.jakimenko.rainforecastbot.dto.openweathermap
 
 data class Sys(
     val type: Int,
