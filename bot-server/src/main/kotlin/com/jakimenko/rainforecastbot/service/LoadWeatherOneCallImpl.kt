@@ -78,10 +78,12 @@ class LoadWeatherOneCallImpl(
     }
 
     private fun calcDate(time: Int, timezone: String): String {
-        return java.time.format.DateTimeFormatter.ISO_INSTANT
-            .format(Instant.ofEpochSecond(time.toLong()).atZone(ZoneId.of(timezone)))
-            .toString()
-            .replace("Z", "")
+        return java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME
+            .format(Instant.ofEpochSecond(time.toLong())
+                .atZone(ZoneId.of(timezone))
+                .withZoneSameInstant(ZoneId.of(timezone))
+            )
+            .substring(0, 19)
             .replace("T", " ")
     }
 

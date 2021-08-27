@@ -18,6 +18,4 @@ import java.time.temporal.ChronoUnit
 
 class CallOpenWeatherMap {
 
-
-
 }
