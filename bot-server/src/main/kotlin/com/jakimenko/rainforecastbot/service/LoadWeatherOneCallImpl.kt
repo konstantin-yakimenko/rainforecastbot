@@ -8,8 +8,8 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 class LoadWeatherOneCallImpl(
-    val api: WeatherApiCall<OnecallResponse> = WeatherApiCallImpl(),
-    val openweathermapAppId: String = System.getenv("OPENWEATHERMAP_APP_ID")
+    private val api: WeatherApiCall<OnecallResponse> = WeatherApiCallImpl(),
+    private val openweathermapAppId: String = System.getenv("OPENWEATHERMAP_APP_ID")
 ): LoadWeather {
 
     override fun load(location: Location?, text: String?): String {
@@ -54,7 +54,7 @@ class LoadWeatherOneCallImpl(
             .forEach {
                 val hour = fromInstant(it.dt, weather.timezone)
                 val hoursDifferent = ChronoUnit.HOURS.between(now, hour)
-                if (hoursDifferent > 12) {
+                if (hoursDifferent > 24) {
                     return@forEach
                 }
                 if (it.rain != null && it.rain.hour > 0 && predictionRain == 0L) {
@@ -72,6 +72,8 @@ class LoadWeatherOneCallImpl(
                 message += "Ожидается дождь через ${predictionRain} ч"
             } else if (predictionSnow > 0) {
                 message += "Ожидается снег через ${predictionSnow} ч"
+            } else {
+                message += "Осадков не ожидается"
             }
         }
         return message

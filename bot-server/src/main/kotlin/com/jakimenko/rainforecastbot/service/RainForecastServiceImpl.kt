@@ -20,7 +20,7 @@ const val API_URL = "https://api.openweathermap.org/data/2.5/"
 
 @Service
 class RainForecastServiceImpl(
-    val bot: TelegramBot = TelegramBot(System.getenv("TGTOKEN"))
+    private val bot: TelegramBot = TelegramBot(System.getenv("TGTOKEN"))
 ): RainForecastService {
     companion object {
         val logger = LoggerFactory.getLogger(RainForecastServiceImpl::class.java)
@@ -70,10 +70,10 @@ class RainForecastServiceImpl(
     }
 
     private fun requestLocation(chatId: Int) {
-        bot.execute(SendMessage(chatId, "Для определения погоды необходимо отправить локацию")
+        bot.execute(SendMessage(chatId, "Для определения погоды необходимо отправить текущую локацию")
             .replyMarkup(
                 ReplyKeyboardMarkup(
-                    KeyboardButton("Отправьте текущую локацию")
+                    KeyboardButton("Нажмите для отправки локации")
                         .requestLocation(true)))
         )
     }

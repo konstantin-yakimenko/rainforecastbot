@@ -18,4 +18,9 @@ import java.time.temporal.ChronoUnit
 
 class CallOpenWeatherMap {
 
+
+    @Test
+    fun test() {
+    }
+
 }

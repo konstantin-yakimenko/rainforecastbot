@@ -10,9 +10,9 @@ import io.ktor.client.statement.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 
-class WeatherApiCallImpl<T: WeatherInfo>(
-    val gson: Gson = Gson()
-): WeatherApiCall<T> {
+private val gson: Gson = Gson()
+
+class WeatherApiCallImpl<T: WeatherInfo>: WeatherApiCall<T> {
 
     override fun <T: WeatherInfo> callWeatherApi(url: String, clazz: Class<T>): T {
         return runBlocking {

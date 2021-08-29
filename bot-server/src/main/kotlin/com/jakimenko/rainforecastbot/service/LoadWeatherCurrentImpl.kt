@@ -5,8 +5,8 @@ import com.jakimenko.rainforecastbot.dto.openweathermap.OnecallResponse
 import com.jakimenko.rainforecastbot.dto.telegram.Location
 
 class LoadWeatherCurrentImpl(
-    val api: WeatherApiCall<OnecallResponse> = WeatherApiCallImpl(),
-    val openweathermapAppId: String = System.getenv("OPENWEATHERMAP_APP_ID")
+    private val api: WeatherApiCall<OnecallResponse> = WeatherApiCallImpl(),
+    private val openweathermapAppId: String = System.getenv("OPENWEATHERMAP_APP_ID")
 ): LoadWeather {
 
     override fun load(location: Location?, text: String?): String {
