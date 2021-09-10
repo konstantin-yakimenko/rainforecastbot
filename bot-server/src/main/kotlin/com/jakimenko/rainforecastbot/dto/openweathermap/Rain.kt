@@ -1,8 +1,10 @@
 package com.jakimenko.rainforecastbot.dto.openweathermap
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class Rain(
-    @SerializedName("1h") val hour: Float,
-    @SerializedName("3h") val treeHours: Float?
+    @JsonProperty("1h") val hour: Float,
+    @JsonProperty("3h") val treeHours: Float?
 )

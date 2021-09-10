@@ -1,6 +1,6 @@
 package com.jakimenko.rainforecastbot.service
 
-import com.google.gson.Gson
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.jakimenko.rainforecastbot.dto.openweathermap.WeatherInfo
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -9,10 +9,13 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
+import mu.KLogging
 
-private val gson: Gson = Gson()
 
 class WeatherApiCallImpl<T: WeatherInfo>: WeatherApiCall<T> {
+    companion object: KLogging() {
+        val mapper = jacksonObjectMapper()
+    }
 
     override fun <T: WeatherInfo> callWeatherApi(url: String, clazz: Class<T>): T {
         return runBlocking {
@@ -25,7 +28,7 @@ class WeatherApiCallImpl<T: WeatherInfo>: WeatherApiCall<T> {
                 .use {
                     withTimeout(1000) {
                         val httpResponse: HttpResponse = it.get(url)
-                        val currentWeather = gson.fromJson(httpResponse.receive<String>(), clazz)
+                        val currentWeather = mapper.readValue(httpResponse.receive<String>(), clazz)
                         return@withTimeout currentWeather
                     }
                 }

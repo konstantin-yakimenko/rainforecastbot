@@ -1,6 +1,5 @@
 package com.jakimenko.rainforecast
 
-//import com.google.gson.Gson
 //import com.jakimenko.rainforecastbot.dto.openweathermap.OnecallResponse
 //import io.ktor.client.*
 //import io.ktor.client.engine.java.*

@@ -44,14 +44,14 @@ class LoadWeatherOneCallImpl(
         val now = Instant.now().atZone(ZoneId.of(weather.timezone))
 
         weather.minutely
-            .forEach {
+            ?.forEach {
                 if (it.precipitation > 0 && predictionPrecipitation == 0L) {
                     val minute = fromInstant(it.dt, weather.timezone)
                     predictionPrecipitation = ChronoUnit.MINUTES.between(now, minute)
                 }
             }
         weather.hourly
-            .forEach {
+            ?.forEach {
                 val hour = fromInstant(it.dt, weather.timezone)
                 val hoursDifferent = ChronoUnit.HOURS.between(now, hour)
                 if (hoursDifferent > 24) {

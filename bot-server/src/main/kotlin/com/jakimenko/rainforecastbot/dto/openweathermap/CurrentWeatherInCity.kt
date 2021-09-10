@@ -1,5 +1,8 @@
 package com.jakimenko.rainforecastbot.dto.openweathermap
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class CurrentWeatherInCity(
     val coord: Coord,
     val weather: Array<Weather>,

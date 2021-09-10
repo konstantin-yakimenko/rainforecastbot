@@ -1,7 +1,7 @@
 package com.jakimenko.rainforecastbot.server
 
 import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.netty.buffer.Unpooled.wrappedBuffer
 import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
@@ -19,7 +19,7 @@ class HttpControllerHandler(
 ) : SimpleChannelInboundHandler<FullHttpRequest>(true) {
 
     companion object: KLogging() {
-        val jacksonObjectMapper:ObjectMapper = ObjectMapper()
+        val jacksonObjectMapper = jacksonObjectMapper()
     }
 
     @Throws(Exception::class)
