@@ -20,14 +20,14 @@ class PathHandlerProvider(
     fun getHandler(request: FullHttpRequest): HttpHandler? {
         var uri = request.uri()
         if (uri.contains("?")) {
-            uri = uri.substring(1, uri.indexOf("?"))
+            uri = uri.substring(0, uri.indexOf("?"))
         }
         val method = request.method()
-        if (method == HttpMethod.POST && uri == System.getenv("TGTOKEN")) {
+        if (method == HttpMethod.POST && uri == "/"+System.getenv("TGTOKEN")) {
             return apiHandler
-        } else if (method == HttpMethod.GET && uri == "register") {
+        } else if (method == HttpMethod.GET && uri == "/register") {
             return registerHandler
-        } else if (method == HttpMethod.GET && uri == "unregister") {
+        } else if (method == HttpMethod.GET && uri == "/unregister") {
             return unregisterHandler
         }
         logger.error { "Not found handler for request: ${uri}" }
