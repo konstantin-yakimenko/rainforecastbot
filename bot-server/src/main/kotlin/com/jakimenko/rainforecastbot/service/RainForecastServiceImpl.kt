@@ -34,7 +34,7 @@ class RainForecastServiceImpl(
                 update.message!!.chat!!.id
             )
         } catch (e: Exception) {
-            logger.error { "Error: ${e}" }
+            logger.error { "Error: ${e}, update: ${update}" }
             sendMessageToUser(update.message!!.chat!!.id, "Ошибка получения информации о погоде")
         }
     }
