@@ -20,7 +20,7 @@ class PathHandlerProvider(
     fun getHandler(request: FullHttpRequest): HttpHandler? {
         var uri = request.uri()
         if (uri.contains("?")) {
-            uri = uri.substring(0, uri.indexOf("?"))
+            uri = uri.substring(1, uri.indexOf("?"))
         }
         val method = request.method()
         if (method == HttpMethod.POST && uri == System.getenv("TGTOKEN")) {
