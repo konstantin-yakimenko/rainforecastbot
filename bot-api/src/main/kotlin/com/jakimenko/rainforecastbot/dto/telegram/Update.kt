@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Update(
-    var update_id: Int,
-    var message: Message?
-) {
-    constructor(): this(0, Message())
-}
+    val update_id: Int,
+    val message: Message?
+)

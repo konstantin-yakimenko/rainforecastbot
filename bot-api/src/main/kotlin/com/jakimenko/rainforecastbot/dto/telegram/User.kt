@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class User(
-    var id: Int?,
-    var is_bot: Boolean?,
-    var first_name: String?,
-    var last_name: String?,
-    var username: String?,
-    var language_code: String?
-) {
-    constructor(): this(0, true, "", "", "", "")
-}
+    val id: Int,
+    val is_bot: Boolean,
+    val first_name: String?,
+    val last_name: String?,
+    val username: String?,
+    val language_code: String?
+)

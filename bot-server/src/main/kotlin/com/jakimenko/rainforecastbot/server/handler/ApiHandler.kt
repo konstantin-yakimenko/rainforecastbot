@@ -1,6 +1,6 @@
 package com.jakimenko.rainforecastbot.server.handler
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.jakimenko.rainforecastbot.dto.telegram.Update
 import com.jakimenko.rainforecastbot.server.HttpHandler
 import com.jakimenko.rainforecastbot.service.RainForecastService
@@ -14,7 +14,7 @@ class ApiHandler(
 ): HttpHandler {
 
     companion object: KLogging() {
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
     }
 
     override fun handleRequest(request: FullHttpRequest?): Any {

@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Chat(
-    var id: Int,
-    var first_name: String?,
-    var last_name: String?,
-    var username: String?,
-    var type: String?
-) {
-    constructor(): this(0, "", "", "", "")
-}
+    val id: Int,
+    val first_name: String?,
+    val last_name: String?,
+    val username: String?,
+    val type: String?
+)
