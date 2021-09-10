@@ -1,13 +1,13 @@
 package com.jakimenko.rainforecastbot.dto.telegram
 
 data class Message(
-    val message_id: Int,
-    val from: User?,
-    val chat: Chat?,
-    val date: Int,
-    val text: String?,
-    val entities: Array<MessageEntity>?,
-    val location: Location?
+    var message_id: Int,
+    var from: User?,
+    var chat: Chat?,
+    var date: Int,
+    var text: String?,
+    var entities: Array<MessageEntity>?,
+    var location: Location?
 ) {
     constructor(): this(0, null, null, 0, null, null, null)
 }

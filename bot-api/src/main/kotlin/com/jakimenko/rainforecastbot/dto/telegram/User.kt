@@ -1,12 +1,12 @@
 package com.jakimenko.rainforecastbot.dto.telegram
 
 data class User(
-    val id: Int,
-    val is_bot: Boolean,
-    val first_name: String?,
-    val last_name: String?,
-    val username: String?,
-    val language_code: String?
+    var id: Int,
+    var is_bot: Boolean?,
+    var first_name: String?,
+    var last_name: String?,
+    var username: String?,
+    var language_code: String?
 ) {
-    constructor(): this(0, false, null, null, null, null)
+    constructor(): this(0, true, null, null, null, null)
 }
