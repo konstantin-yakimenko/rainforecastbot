@@ -12,5 +12,5 @@ data class Message(
     var entities: Array<MessageEntity>?,
     var location: Location?
 ) {
-    constructor(): this(0, User(), Chat(), 0, "", arrayOf(), Location())
+    constructor(): this(0, User(), Chat(), 0, null, arrayOf(), null)
 }
