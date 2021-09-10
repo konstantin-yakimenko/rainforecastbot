@@ -26,9 +26,9 @@ class PathHandlerProvider(
         if (method == HttpMethod.POST && uri == "/"+System.getenv("TGTOKEN")) {
             return apiHandler
         } else if (method == HttpMethod.GET && uri == "/register") {
-            return registerHandler
+//            return registerHandler
         } else if (method == HttpMethod.GET && uri == "/unregister") {
-            return unregisterHandler
+//            return unregisterHandler
         }
         logger.error { "Not found handler for request: ${uri}" }
         return null

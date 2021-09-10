@@ -7,5 +7,5 @@ data class Chat(
     var username: String?,
     var type: String?
 ) {
-    constructor(): this(0, null, null, null, null)
+    constructor(): this(0, "", "", "", "")
 }

@@ -8,5 +8,5 @@ data class Location(
     var heading: Int?,
     var proximity_alert_radius: Int?
 ) {
-    constructor(): this(0f, 0f, null, null, null, null)
+    constructor(): this(0f, 0f, 0f, 0, 0, 0)
 }

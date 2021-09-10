@@ -5,5 +5,5 @@ data class MessageEntity(
     var length: Int?,
     var type: String?
 ) {
-    constructor(): this(null, null, null)
+    constructor(): this(0, 0, "")
 }
