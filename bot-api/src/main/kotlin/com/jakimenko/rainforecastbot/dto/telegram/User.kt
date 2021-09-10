@@ -13,5 +13,7 @@ data class User(
     var username: String?,
     var language_code: String?
 ) {
-    constructor(): this(0, true, null, null, null, null)
+    constructor(): this(id = 0, is_bot = true, first_name = null, last_name = null, username = null, language_code = null)
+    constructor(id: Int, first_name: String?, last_name: String?, username: String?, language_code: String?):
+        this(id = id, is_bot = null, first_name = first_name, last_name = last_name, username = username, language_code = language_code)
 }
