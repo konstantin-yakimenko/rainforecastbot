@@ -8,4 +8,6 @@ data class Message(
     val text: String?,
     val entities: Array<MessageEntity>?,
     val location: Location?
-)
+) {
+    constructor(): this(0, null, null, 0, null, null, null)
+}

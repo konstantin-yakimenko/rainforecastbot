@@ -7,13 +7,8 @@ enum class Commands(
     COMMAND_START("/start");
 
     companion object {
-        fun oneOfThem(command: String): Boolean {
-            values().forEach {
-                if (it.command == command) {
-                    return true
-                }
-            }
-            return false
+        fun any(command: String): Boolean {
+            return values().any { it.command == command }
         }
     }
 }

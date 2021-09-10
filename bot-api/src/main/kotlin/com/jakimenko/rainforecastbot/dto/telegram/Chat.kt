@@ -6,4 +6,6 @@ data class Chat(
     val last_name: String?,
     val username: String?,
     val type: String?
-)
+) {
+    constructor(): this(0, null, null, null, null)
+}

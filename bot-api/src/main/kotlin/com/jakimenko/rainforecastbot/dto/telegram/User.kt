@@ -7,4 +7,6 @@ data class User(
     val last_name: String?,
     val username: String?,
     val language_code: String?
-)
+) {
+    constructor(): this(0, false, null, null, null, null)
+}
