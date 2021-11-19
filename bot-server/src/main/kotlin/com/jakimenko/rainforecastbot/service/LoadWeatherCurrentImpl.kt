@@ -9,8 +9,8 @@ class LoadWeatherCurrentImpl(
     private val openweathermapAppId: String = System.getenv("OPENWEATHERMAP_APP_ID")
 ): LoadWeather {
 
-    override fun load(location: Location?, text: String?): String {
-        val currentWeather = api.callWeatherApi(buildUrl(location, text), CurrentWeatherInCity::class.java)
+    override suspend fun load(location: Location?, text: String?, httpClient: HttpClient): String {
+        val currentWeather = api.callWeatherApi(buildUrl(location, text), CurrentWeatherInCity::class.java, httpClient)
         return buildResponseMessage(currentWeather)
     }
 

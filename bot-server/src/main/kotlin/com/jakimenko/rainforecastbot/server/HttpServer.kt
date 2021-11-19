@@ -21,7 +21,7 @@ class HttpServer(
     companion object: KLogging()
 
     private val bossGroup = NioEventLoopGroup(1)
-    private val workerGroup = NioEventLoopGroup() // 12 or default ?
+    private val workerGroup = NioEventLoopGroup(Runtime.getRuntime().availableProcessors() / 2 + 1)
 
     @Throws(Exception::class)
     override fun run(vararg args: String?) {

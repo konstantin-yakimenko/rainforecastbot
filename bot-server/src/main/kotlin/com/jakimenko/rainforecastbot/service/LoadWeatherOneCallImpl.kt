@@ -12,8 +12,8 @@ class LoadWeatherOneCallImpl(
     private val openweathermapAppId: String = System.getenv("OPENWEATHERMAP_APP_ID")
 ): LoadWeather {
 
-    override fun load(location: Location?, text: String?): String {
-        val weather = api.callWeatherApi(buildUrl(location!!), OnecallResponse::class.java)
+    override suspend fun load(location: Location?, text: String?, httpClient: HttpClient): String {
+        val weather = api.callWeatherApi(buildUrl(location!!), OnecallResponse::class.java, httpClient)
         return buildResponseMessage(weather)
     }
 

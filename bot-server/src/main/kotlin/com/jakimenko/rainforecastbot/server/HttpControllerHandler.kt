@@ -79,6 +79,7 @@ class HttpControllerHandler(
             TEXT_PLAIN,
             if (cause.message == null) "" else cause.message
         )
+        ctx.close()
     }
 
 }

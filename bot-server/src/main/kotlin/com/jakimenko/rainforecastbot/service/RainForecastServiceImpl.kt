@@ -8,40 +8,55 @@ import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup
 import com.pengrad.telegrambot.request.DeleteWebhook
 import com.pengrad.telegrambot.request.SendMessage
 import com.pengrad.telegrambot.request.SetWebhook
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.launch
 import mu.KLogging
 import org.springframework.stereotype.Service
+import java.util.concurrent.Executors
 
 
 const val API_URL = "https://api.openweathermap.org/data/2.5/"
 
+val mydisspatcher = Executors
+    .newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 2 + 1)
+    .asCoroutineDispatcher()
+val scope = CoroutineScope(SupervisorJob() + mydisspatcher)
+
+
 @Service
 class RainForecastServiceImpl(
-    private val bot: TelegramBot = TelegramBot(System.getenv("TGTOKEN"))
+    private val httpClient: HttpClient
 ) : RainForecastService {
     companion object: KLogging()
 
-    override fun callback(update: Update) {
-        try {
-            val text = update.message!!.text
-            if (text != null && Commands.any(text)) {
-                requestLocation(update.message!!.chat!!.id)
-                return
-            }
+    private val bot: TelegramBot = TelegramBot(System.getenv("TGTOKEN"))
 
-            executeCallback(
-                update.message!!.location,
-                update.message!!.text,
-                update.message!!.chat!!.id
-            )
-        } catch (e: Exception) {
-            logger.error { "Error: ${e}, update: ${update}" }
-            sendMessageToUser(update.message!!.chat!!.id, "Ошибка получения информации о погоде")
+    override fun callback(update: Update) {
+        scope.launch {
+            try {
+                val text = update.message!!.text
+                if (text != null && Commands.any(text)) {
+                    requestLocation(update.message!!.chat!!.id)
+                    return@launch
+                }
+
+                executeCallback(
+                    update.message!!.location,
+                    update.message!!.text,
+                    update.message!!.chat!!.id
+                )
+            } catch (e: Exception) {
+                logger.error { "Error: ${e}, update: ${update}" }
+                sendMessageToUser(update.message!!.chat!!.id, "Ошибка получения информации о погоде")
+            }
         }
     }
 
-    private fun executeCallback(location: Location?, message: String?, chatId: Int) {
+    private suspend fun executeCallback(location: Location?, message: String?, chatId: Int) {
         val apiWeather = buildApiWeather(location)
-        val responseMessage = apiWeather.load(location, message)
+        val responseMessage = apiWeather.load(location, message, httpClient)
         sendMessageToUser(chatId, responseMessage)
     }
 
